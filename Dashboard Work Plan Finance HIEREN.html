@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Dashboard Work Plan Finance HIEREN</title>
+<style>
+:root{--bg:#f6f7f4;--card:#fff;--tx:#1d2420;--mu:#68716b;--bd:#e3e6e0;--ac:#1f7a5a;--ac2:#e3f2ec;--wa:#b7791f;
+--c1:#1f7a5a;--c2:#2b6cb0;--c3:#b7791f;--c4:#8a4fbf;--c5:#c0475a;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121715;--card:#1a211e;--tx:#e8ede9;--mu:#98a39c;--bd:#2a3430;--ac:#4cc79a;--ac2:#1d3a30;--wa:#e0a84a;--c1:#4cc79a;--c2:#6aa8ec;--c3:#e0a84a;--c4:#b68be6;--c5:#ec7f91;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#121715;--card:#1a211e;--tx:#e8ede9;--mu:#98a39c;--bd:#2a3430;--ac:#4cc79a;--ac2:#1d3a30;--wa:#e0a84a;--c1:#4cc79a;--c2:#6aa8ec;--c3:#e0a84a;--c4:#b68be6;--c5:#ec7f91;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:1100px;margin:0 auto;padding:20px 16px 48px}
+h1{font-size:22px;margin:0}h2{font-size:15px;margin:0 0 12px}
+.sub{color:var(--mu);font-size:13px;margin-top:2px}
+header{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+.grid{display:grid;gap:14px}
+.kpis{grid-template-columns:repeat(auto-fit,minmax(160px,1fr));margin-bottom:14px}
+.two{grid-template-columns:repeat(auto-fit,minmax(300px,1fr));margin-bottom:14px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:16px}
+.kpi b{display:block;font-size:26px;line-height:1.2}.kpi span{color:var(--mu);font-size:13px}
+.ring{display:flex;align-items:center;gap:16px}
+.donut{width:96px;height:96px;border-radius:50%;display:grid;place-items:center;flex:none}
+.donut i{width:70px;height:70px;border-radius:50%;background:var(--card);display:grid;place-items:center;font:700 20px system-ui;font-style:normal}
+.row{display:flex;align-items:center;gap:10px;margin:10px 0;font-size:13px}
+.row .nm{width:96px;flex:none}.row .ct{width:44px;text-align:right;color:var(--mu);flex:none}
+.bar{flex:1;height:9px;background:var(--bd);border-radius:9px;overflow:hidden}.bar u{display:block;height:100%;border-radius:9px;transition:width .3s}
+.tools{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.chip,button,select,input{font:inherit;font-size:13px;color:var(--tx);background:var(--card);border:1px solid var(--bd);border-radius:999px;padding:6px 12px;cursor:pointer}
+.chip.on{background:var(--ac);border-color:var(--ac);color:#fff}
+input[type=search]{border-radius:10px;flex:1;min-width:160px;cursor:text}select{border-radius:10px}
+.task{display:flex;gap:12px;align-items:flex-start;padding:11px 4px;border-top:1px solid var(--bd)}
+.task input{width:20px;height:20px;margin-top:2px;accent-color:var(--ac);flex:none;padding:0}
+.task.done .t{text-decoration:line-through;color:var(--mu)}
+.meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px;font-size:12px}
+.tag{padding:1px 9px;border-radius:99px;border:1px solid var(--bd);color:var(--mu)}
+.pic{color:#fff;border:0}
+.tl{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px}
+.tl div{border:1px solid var(--bd);border-radius:10px;padding:10px;font-size:12px}
+.tl b{display:block;font-size:18px;margin:2px 0 6px}
+.empty{color:var(--mu);padding:18px 0;text-align:center}
+.scroll{overflow-x:auto}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+<div><h1>Dashboard Work Plan Finance</h1><div class="sub">PT Hieren Astara Daya · November – Desember 2026</div></div>
+<div style="display:flex;gap:8px"><button id="rs">Reset centang</button></div>
+</header>
+
+<div class="grid kpis" id="kpis"></div>
+
+<div class="grid two">
+<div class="card"><h2>Progres keseluruhan</h2><div class="ring"><div class="donut" id="donut"><i id="pct"></i></div><div class="sub" id="ringtxt" style="font-size:14px"></div></div></div>
+<div class="card"><h2>Progres per PIC</h2><div id="pics"></div></div>
+</div>
+
+<div class="card" style="margin-bottom:14px"><h2>Timeline per periode</h2><div class="tl" id="tl"></div></div>
+
+<div class="card">
+<h2>Task check monitoring</h2>
+<div class="tools" id="fpic"></div>
+<div class="tools" id="fper"></div>
+<div class="tools"><input type="search" id="q" placeholder="Cari task..."><select id="st"><option value="all">Semua status</option><option value="open">Belum selesai</option><option value="done">Selesai</option></select></div>
+<div id="list"></div>
+</div>
+</div>
+<script>
+var PICS={'Faqih':['Procurement','--c1'],'Niki':['Fin. Projection','--c2'],'Nadhifa':['Accounting','--c3'],'Tim Riset':['Vio, Salma, Tsania','--c4'],'Adinda':['CFO','--c5']};
+var PER={W1:'Minggu 1 Nov',W2:'Minggu 2 Nov',W3:'Minggu 3 Nov',W4:'Minggu 4 Nov',DES:'Desember',RUT:'Rutin'};
+var T=[
+['Faqih','Finalisasi: rekap kebutuhan pengadaan dan daftar barang (Oktober)','Okt · Minggu 1 Nov','W1'],
+['Niki','Finalisasi: update proyeksi keuangan di master document (Oktober)','Okt · Minggu 1 Nov','W1'],
+['Nadhifa','Finalisasi: pencatatan transaksi dan arsip bukti (Oktober)','Okt · Minggu 1 Nov','W1'],
+['Tim Riset','Finalisasi: materi dasar riset pasar (Oktober)','Okt · Minggu 1 Nov','W1'],
+['Adinda','Finalisasi: review dan persetujuan anggaran (Oktober)','Okt · Minggu 1 Nov','W1'],
+['Faqih','Mengidentifikasi kebutuhan pengadaan dari setiap fungsi dan tim teknologi','Minggu 1 Nov','W1'],
+['Faqih','Mengumpulkan spesifikasi barang/jasa, jumlah, dan estimasi harga','Minggu 1 Nov','W1'],
+['Faqih','Menyusun BOM (Bill of Materials) produk HIEREN','Minggu 2 Nov','W2'],
+['Faqih','Membandingkan vendor: harga, kualitas, kesesuaian kebutuhan','Minggu 2 Nov','W2'],
+['Faqih','Menyusun daftar procurement, estimasi anggaran, dan prioritas','Minggu 3 Nov','W3'],
+['Faqih','Koordinasi dengan tim teknologi (sektor energi dan non-energi)','Berjalan','RUT'],
+['Faqih','Dokumentasi penawaran, bukti transaksi, status pengadaan','Berjalan','RUT'],
+['Niki','Memperbarui asumsi proyeksi sesuai master document','Minggu 1 Nov','W1'],
+['Niki','Menghitung proyeksi biaya produksi berdasarkan BOM','Minggu 2 Nov','W2'],
+['Niki','Menyusun proyeksi pendapatan dan target penjualan','Minggu 3 Nov','W3'],
+['Niki','Menyusun proyeksi arus kas, titik impas, kebutuhan dana','Minggu 4 Nov','W4'],
+['Niki','Menyesuaikan proyeksi dengan hasil riset pasar','Desember','DES'],
+['Niki','Menyiapkan ringkasan proyeksi untuk review CFO','Akhir bulan','W4'],
+['Nadhifa','Mencatat seluruh transaksi masuk dan keluar ke jurnal','Berjalan','RUT'],
+['Nadhifa','Mengarsipkan bukti transaksi di folder yang sama dengan Procurement','Berjalan','RUT'],
+['Nadhifa','Merekap kas harian atau mingguan','Mingguan','RUT'],
+['Nadhifa','Mencocokkan catatan dengan bukti dan saldo','Akhir bulan','W4'],
+['Nadhifa','Menyusun laporan keuangan bulanan (arus kas, rekap pengeluaran)','Minggu 4 Nov','W4'],
+['Nadhifa','Menyerahkan laporan ke CFO untuk dicek','Akhir bulan','W4'],
+['Tim Riset','Mempelajari dasar riset pasar: segmentasi, target pasar, metode data','Minggu 1-2 Nov','W1'],
+['Tim Riset','Memetakan segmen: pedesaan dan perkotaan/pinggiran kota','Minggu 2 Nov','W2'],
+['Tim Riset','Mengumpulkan data kompetitor dan harga produk sejenis','Minggu 3 Nov','W3'],
+['Tim Riset','Menyusun pertanyaan survei atau wawancara calon pengguna','Minggu 4 Nov','W4'],
+['Tim Riset','Menjalankan survei/wawancara dan merekap hasil','Desember','DES'],
+['Tim Riset','Menyerahkan ringkasan temuan ke Niki','Desember','DES'],
+['Adinda','Menyetujui daftar procurement dan anggaran','Minggu 3 Nov','W3'],
+['Adinda','Mengatur distribusi dana sesuai prioritas dan anggaran','Berjalan','RUT'],
+['Adinda','Mereview proyeksi keuangan dan laporan akuntansi bulanan','Akhir bulan','W4'],
+['Adinda','Mengecek kesiapan operasional dan dana untuk mulai menjual','Desember','DES'],
+['Adinda','Memantau progres setiap PIC dan menindaklanjuti kendala','Mingguan','RUT']
+];
+var KEY='hieren-finance-tasks-v1',S={};
+try{S=JSON.parse(localStorage.getItem(KEY)||'{}')||{}}catch(e){S={}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+var fp='all',fr='all';
+function $(i){return document.getElementById(i)}
+function col(p){return 'var('+PICS[p][1]+')'}
+function stat(arr){var d=0;arr.forEach(function(t){if(S[t.id])d++});return [d,arr.length,arr.length?Math.round(d/arr.length*100):0]}
+var X=T.map(function(t,i){return{id:i,pic:t[0],txt:t[1],tgt:t[2],per:t[3]}});
+function chips(el,items,cur,fn){el.innerHTML='';items.forEach(function(it){var b=document.createElement('button');b.className='chip'+(cur===it[0]?' on':'');b.textContent=it[1];b.onclick=function(){fn(it[0])};el.appendChild(b)})}
+function render(){
+ var a=stat(X),open=a[1]-a[0];
+ $('kpis').innerHTML=[['Total task',a[1]],['Selesai',a[0]],['Belum selesai',open],['Progres',a[2]+'%']].map(function(k){return '<div class="card kpi"><b>'+k[1]+'</b><span>'+k[0]+'</span></div>'}).join('');
+ $('donut').style.background='conic-gradient(var(--ac) '+a[2]*3.6+'deg,var(--bd) 0)';
+ $('pct').textContent=a[2]+'%';
+ $('ringtxt').textContent=a[0]+' dari '+a[1]+' task sudah dicentang.';
+ $('pics').innerHTML=Object.keys(PICS).map(function(p){var s=stat(X.filter(function(t){return t.pic===p}));return '<div class="row"><span class="nm">'+p+'</span><div class="bar"><u style="width:'+s[2]+'%;background:'+col(p)+'"></u></div><span class="ct">'+s[0]+'/'+s[1]+'</span></div>'}).join('');
+ $('tl').innerHTML=Object.keys(PER).map(function(k){var s=stat(X.filter(function(t){return t.per===k}));return '<div><span style="color:var(--mu)">'+PER[k]+'</span><b>'+s[2]+'%</b><div class="bar"><u style="width:'+s[2]+'%;background:var(--ac)"></u></div><div style="margin-top:6px;color:var(--mu)">'+s[0]+'/'+s[1]+' task</div></div>'}).join('');
+ chips($('fpic'),[['all','Semua PIC']].concat(Object.keys(PICS).map(function(p){return [p,p]})),fp,function(v){fp=v;render()});
+ chips($('fper'),[['all','Semua periode']].concat(Object.keys(PER).map(function(k){return [k,PER[k]]})),fr,function(v){fr=v;render()});
+ var q=$('q').value.toLowerCase(),st=$('st').value;
+ var L=X.filter(function(t){return (fp==='all'||t.pic===fp)&&(fr==='all'||t.per===fr)&&(st==='all'||(st==='done')===!!S[t.id])&&(!q||(t.txt+t.pic).toLowerCase().indexOf(q)>-1)});
+ $('list').innerHTML=L.length?L.map(function(t){return '<label class="task'+(S[t.id]?' done':'')+'"><input type="checkbox" data-id="'+t.id+'"'+(S[t.id]?' checked':'')+'><div><div class="t">'+t.txt+'</div><div class="meta"><span class="tag pic" style="background:'+col(t.pic)+'">'+t.pic+'</span><span class="tag">'+t.tgt+'</span></div></div></label>'}).join(''):'<div class="empty">Tidak ada task yang cocok.</div>';
+ Array.prototype.forEach.call(document.querySelectorAll('#list input'),function(c){c.onchange=function(){S[c.dataset.id]=c.checked;save();render()}});
+}
+$('q').oninput=render;$('st').onchange=render;
+$('rs').onclick=function(){if(confirm('Hapus semua centang?')){S={};save();render()}};
+render();
+</script>
+</body>
+</html>
